@@ -52,7 +52,7 @@ impl WeatherApi {
         }
     }
 
-    fn get_current_weaterh(&self, address: &str) -> WeatherResult {
+    fn get_current_weather(&self, address: &str) -> WeatherResult {
         let url = format!("{API_URL}/current.json");
         let resp: CurrentAPIResponse = ureq::get(&url)
             .query("key", &self.api_key)
@@ -83,7 +83,7 @@ impl WeatherApi {
         }
     }
 
-    fn get_future_weaterh(&self, address: &str, date: &str) -> WeatherResult {
+    fn get_future_weather(&self, address: &str, date: &str) -> WeatherResult {
         self.get_forecast_weather("future.json", address, date)
     }
 
@@ -95,14 +95,14 @@ impl WeatherApi {
 impl WeatherGetter for WeatherApi {
     fn get_weather(&self, address: &str, date: &str) -> WeatherResult {
         if date.is_empty() {
-            self.get_current_weaterh(address)
+            self.get_current_weather(address)
         } else {
             let target = NaiveDate::parse_from_str(date, "%Y-%m-%d")?;
             let now = Local::now().date_naive();
 
             match target.cmp(&now) {
-                Ordering::Equal => self.get_current_weaterh(address),
-                Ordering::Greater => self.get_future_weaterh(address, &target.to_string()),
+                Ordering::Equal => self.get_current_weather(address),
+                Ordering::Greater => self.get_future_weather(address, &target.to_string()),
                 Ordering::Less => self.get_historical_weather(address, &target.to_string()),
             }
         }

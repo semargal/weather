@@ -46,7 +46,7 @@ Output:
 Temperature: 3, humidity: 81, wind speed: 6.1
 ```
 
-Example example for forecasts:
+Example for forecasts:
 ```shell
 weather get London 2023-04-03
 ```
